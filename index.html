@@ -55,10 +55,8 @@
     let btn = document.querySelector('.getBtn');
     let divOk = document.querySelector('.outOk');
     let divWarn = document.querySelector('.outWarn');
-    let obj = {};
 
     btn.addEventListener('click', () => {
-
         fetch(`${pathFile.value}`)
             .then((resp) => resp.json())
             .then((json) => {
@@ -66,7 +64,11 @@
                 getPath(pathObj.value, json);
                 }
             )
-            .catch((err)=>{divWarn.innerHTML = `Неверный путь к файлу`;reset(); getWarn();})
+            .catch(()=>{
+                divWarn.innerHTML = `Wrong path to file or file does not exist`;
+                reset(); 
+                getWarn();
+        })
 
     })
 
@@ -80,7 +82,7 @@
             getOk(first);
         } else {
             getWarn();
-            divWarn.innerHTML = `Неверный путь к элементу`;
+            divWarn.innerHTML = `Wrong path to element`;
         }
     }
 
