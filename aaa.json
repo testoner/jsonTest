@@ -1,0 +1,7 @@
+{
+  "value1" : "text1",
+  "value2" : "text2",
+  "value3" : {
+    "getValue3" : "text3"
+  }
+}

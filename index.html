@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JsonTest</title>
+</head>
+<body>
+<div class="main">
+    <div class="mainWrapper">
+        <label for="File">File path: </label>
+        <input type="text" class="pathFile" id="File">
+        <label for="Obj">Object path: </label>
+        <input type="text" class="pathObj" id="Obj">
+        <button class="getBtn">get text</button>
+    </div>
+    <div class="outputWindow">
+        <div class="outOk"></div>
+        <div class="outWarn"></div>
+    </div>
+</div>
+<style>
+    .main {
+        width: 100%;
+        height: calc(100vh - 90px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .outOk,.outWarn{
+        display: none;
+    }
+    .displayBlock{
+        display: block !important;
+    }
+    .outOk{
+        background-color: rgba(61, 182, 61, 0.82);
+        border-radius: 12px;
+        padding: 15px;
+        margin-top: 15px;
+        color: white;
+    }
+    .outWarn{
+        background-color: rgb(255, 92, 92);
+        border-radius: 12px;
+        padding: 15px;
+        margin-top: 15px;
+        color: white;
+    }
+</style>
+<script>
+    let pathFile = document.querySelector('.pathFile');
+    let pathObj = document.querySelector('.pathObj');
+    let btn = document.querySelector('.getBtn');
+    let divOk = document.querySelector('.outOk');
+    let divWarn = document.querySelector('.outWarn');
+    let obj = {};
+
+    btn.addEventListener('click', () => {
+
+        fetch(`${pathFile.value}`)
+            .then((resp) => resp.json())
+            .then((json) => {
+                reset();
+                getPath(pathObj.value, json);
+                }
+            )
+            .catch((err)=>{divWarn.innerHTML = `Неверный путь к файлу`;reset(); getWarn();})
+
+    })
+
+    function getPath(str , json){
+        let arr = str.split('.');
+        let first = json;
+        arr.forEach((el) => {
+            first = first[el];
+        })
+        if (first) {
+            getOk(first);
+        } else {
+            getWarn();
+            divWarn.innerHTML = `Неверный путь к элементу`;
+        }
+    }
+
+    function getOk(text){
+        divOk.innerHTML = `${text}`;
+        divOk.classList.add('displayBlock');
+    }
+
+    function  getWarn(){
+        divWarn.classList.add('displayBlock');
+    }
+
+    function reset(){
+
+        divOk.classList.remove('displayBlock');
+        divWarn.classList.remove('displayBlock');
+    }
+
+</script>
+</body>
+</html>
